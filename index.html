@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Black Knight, Inc. - Financial Analysis 2022</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ========================================
+           CSS VARIABLES - Color Palette & Shadows
+           ======================================== */
+        :root {
+            --primary-dark: #0a1628;
+            --primary-blue: #1e3a5f;
+            --accent-gold: #c9a961;
+            --accent-teal: #2a9d8f;
+            --success-green: #06a77d;
+            --warning-amber: #e76f51;
+            --danger-red: #d62828;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a5568;
+            --bg-light: #fafafa;
+            --bg-white: #ffffff;
+            --border-color: #c9a961;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        /* ========================================
+           GLOBAL RESET & BASE STYLES
+           ======================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 120px;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            line-height: 1.7;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #0a1628 0%, #1e3a5f 100%);
+            overflow-x: hidden;
+            padding: 16px;
+        }
+
+        /* ========================================
+           HEADER SECTION - Company Branding
+           ======================================== */
+        header {
+            padding: 2.5rem 2rem;
+            background: linear-gradient(135deg, rgba(10, 22, 40, 0.98) 0%, rgba(30, 58, 95, 0.95) 100%);
+            border: 2px solid rgba(201, 169, 97, 0.3);
+            border-radius: 20px;
+            box-shadow: 
+                0 20px 60px rgba(0,0,0,.4),
+                0 0 0 1px rgba(255,255,255,0.05) inset;
+            backdrop-filter: blur(20px);
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(201, 169, 97, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(42, 157, 143, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .brand {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .kicker {
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--accent-gold);
+            font-size: .85rem;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.25rem;
+            letter-spacing: .02em;
+            font-family: 'Crimson Pro', serif;
+            font-weight: 700;
+            color: white;
+            line-height: 1.2;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            background: linear-gradient(135deg, #ffffff 0%, #e8edf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sub {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            color: #a8b4d6;
+            font-size: .94rem;
+        }
+
+        .pill {
+            border: 1.5px solid rgba(201, 169, 97, 0.3);
+            background: rgba(10, 22, 40, 0.6);
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-family: ui-monospace, 'Courier New', monospace;
+            font-size: .85rem;
+            color: #d7e1ff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .pill:hover {
+            background: rgba(10, 22, 40, 0.8);
+            border-color: var(--accent-gold);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(201, 169, 97, 0.3);
+        }
+
+        .pill strong {
+            color: var(--accent-gold);
+            font-weight: 700;
+        }
+
+        .prepared-by {
+            margin-top: 16px;
+            font-size: 0.95rem;
+            color: rgba(201, 169, 97, 0.9);
+            font-style: italic;
+            letter-spacing: 0.03em;
+            padding-left: 3px;
+            border-left: 3px solid var(--accent-gold);
+            padding-left: 12px;
+        }
+
+        /* ========================================
+           STICKY NAVIGATION BAR
+           ======================================== */
+        .main-nav {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 16px;
+            background: linear-gradient(180deg, rgba(10, 22, 40, 0.98), rgba(30, 58, 95, 0.95));
+            border: 2px solid rgba(201, 169, 97, 0.3);
+            border-radius: 18px;
+            box-shadow: 0 12px 40px rgba(0,0,0,.3);
+            position: sticky;
+            top: 0px;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            margin-bottom: 2rem;
+        }
+
+        .navbtn {
+            padding: 10px 18px;
+            border: 2px solid rgba(201, 169, 97, 0.3);
+            background: rgba(15,23,48,.55);
+            border-radius: 12px;
+            color: #e8edf8;
+            font-size: .92rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbtn:hover {
+            background: rgba(15,23,48,.9);
+            border-color: var(--accent-gold);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(201, 169, 97, 0.2);
+        }
+
+        /* ========================================
+           MAIN CONTENT CONTAINER
+           ======================================== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* ========================================
+           CONTENT SECTIONS - General Styling
+           ======================================== */
+        .section {
+            background: rgba(255, 255, 255, 0.98);
+            margin: 2rem auto;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: calc(var(--section-delay) * 0.15s);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========================================
+           TYPOGRAPHY - Headings & Text
+           ======================================== */
+        h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2.25rem;
+            color: var(--primary-dark);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--accent-gold);
+            display: inline-block;
+        }
+
+        .recommendations h2 {
+            color: white;
+        }
+
+        h3 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.75rem;
+            color: var(--primary-blue);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* ========================================
+           OVERVIEW SECTION - Company Metrics Grid
+           ======================================== */
+        .overview-container {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2.5rem;
+            align-items: start;
+        }
+
+        .overview-text {
+            flex: 1;
+        }
+
+        .overview-sidebar {
+            background: linear-gradient(135deg, rgba(30, 58, 95, 0.03) 0%, rgba(42, 157, 143, 0.03) 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid var(--border-color);
+            position: sticky;
+            top: 150px;
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .overview-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent-teal);
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .overview-card:hover {
+            transform: translateX(4px);
+            box-shadow: var(--shadow-md);
+            border-left-color: var(--accent-gold);
+        }
+
+        .overview-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .overview-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        /* ========================================
+           EXECUTIVE OVERVIEW - Subsections + Lists + Dividers (ADDED)
+           ======================================== */
+        .overview-text .subsection-title {
+            margin: 1.75rem 0 0.75rem;
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--primary-blue);
+            position: relative;
+            padding-left: 1.6rem;
+        }
+
+        .overview-text .subsection-title::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            top: 0.05rem;
+            color: var(--accent-teal);
+            font-weight: 700;
+        }
+
+        .overview-text .subsection-title::after {
+            content: "";
+            display: block;
+            height: 2px;
+            width: 100%;
+            margin-top: 0.65rem;
+            background: linear-gradient(
+                90deg,
+                rgba(42, 157, 143, 0.35),
+                rgba(201, 169, 97, 0.25),
+                rgba(30, 58, 95, 0)
+            );
+            border-radius: 999px;
+        }
+
+        .analysis-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 0.75rem 0 1.25rem;
+            display: grid;
+            gap: 0.6rem;
+        }
+
+        .analysis-list li {
+            position: relative;
+            padding-left: 1.75rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+        }
+
+        .analysis-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 0.05rem;
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(42, 157, 143, 0.10);
+            color: var(--accent-teal);
+            font-weight: 800;
+            font-size: 0.85rem;
+        }
+
+        .overview-text .section-divider {
+            height: 1px;
+            margin: 1.35rem 0;
+            background: linear-gradient(
+                90deg,
+                rgba(226, 232, 240, 1),
+                rgba(226, 232, 240, 0.5),
+                rgba(226, 232, 240, 0)
+            );
+        }
+
+        /* ========================================
+           RATIO DASHBOARD - Financial Metrics Grid
+           ======================================== */
+        .ratio-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .ratio-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.75rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ratio-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--ratio-color);
+            transition: width 0.3s ease;
+        }
+
+        .ratio-card:hover::before {
+            width: 8px;
+        }
+
+        .ratio-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .ratio-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .ratio-name {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* ========================================
+           PERFORMANCE BADGES
+           ======================================== */
+        .ratio-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-excellent {
+            background: rgba(6, 167, 125, 0.1);
+            color: var(--success-green);
+        }
+
+        .badge-good {
+            background: rgba(42, 157, 143, 0.1);
+            color: var(--accent-teal);
+        }
+
+        .badge-concerning {
+            background: rgba(231, 111, 81, 0.1);
+            color: var(--warning-amber);
+        }
+
+        .badge-poor {
+            background: rgba(214, 40, 40, 0.1);
+            color: var(--danger-red);
+        }
+
+        /* ========================================
+           RATIO CARD CONTENT
+           ======================================== */
+        .ratio-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .ratio-comparison {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        .comparison-metric {
+            display: inline-block;
+            margin-top: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            background: var(--bg-light);
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        /* ========================================
+           PROGRESS BARS
+           ======================================== */
+        .stat-bar {
+            height: 8px;
+            background: var(--bg-light);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .stat-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-teal) 0%, var(--primary-blue) 100%);
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        /* ========================================
+           ANALYSIS SECTIONS
+           ======================================== */
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .analysis-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 2px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+
+        .analysis-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+        }
+
+        .analysis-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .analysis-category {
+            margin-bottom: 3rem;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .category-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--accent-teal) 0%, var(--primary-blue) 100%);
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .analysis-card h3 {
+            margin-top: 0;
+            font-size: 1.5rem;
+        }
+
+        .analysis-text {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        /* ========================================
+           KEY INSIGHTS CALLOUT BOXES
+           ======================================== */
+        .key-insight {
+            background: linear-gradient(135deg, rgba(42, 157, 143, 0.05) 0%, rgba(30, 58, 95, 0.05) 100%);
+            border-left: 4px solid var(--accent-teal);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+        }
+
+        .key-insight strong {
+            color: var(--primary-dark);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ========================================
+           RECOMMENDATIONS SECTION
+           ======================================== */
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .recommendation-card {
+            background: linear-gradient(135deg, rgba(10, 22, 40, 0.98) 0%, rgba(30, 58, 95, 0.95) 100%);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            border: 2px solid var(--border-color);
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+        }
+
+        .recommendation-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0,0,0,.3);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            background: rgba(201, 169, 97, 0.2);
+            border: 2px solid var(--accent-gold);
+            flex-shrink: 0;
+        }
+
+        .recommendation-card h3 {
+            margin: 0;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .recommendation-card .analysis-text {
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 0;
+        }
+
+        .recommendation-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .recommendation-list li {
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 1.25rem;
+            padding-left: 1.5rem;
+            position: relative;
+            line-height: 1.7;
+        }
+
+        .recommendation-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        .recommendation-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent-gold);
+            font-size: 1.5rem;
+            line-height: 1.3;
+        }
+
+        .recommendation-list strong {
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .recommendations {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 12px;
+            margin-top: 0;
+        }
+
+        .recommendations h2 {
+            color: white;
+            border-bottom-color: var(--accent-gold);
+        }
+
+        .recommendations p {
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .rec-list {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .rec-list li {
+            padding: 1rem 0 1rem 2.5rem;
+            position: relative;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .rec-list li:last-child {
+            border-bottom: none;
+        }
+
+        .rec-list li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-gold);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* ========================================
+           REFERENCES SECTION
+           ======================================== */
+        .references {
+            background: var(--bg-light);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            scroll-margin-top: 100px;
+        }
+
+        #references {
+            scroll-margin-top: 100px;
+        }
+
+        .references h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .ref-list {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        .ref-list p {
+            margin-bottom: 0.75rem;
+            padding-left: 2rem;
+            text-indent: -2rem;
+        }
+
+        /* ========================================
+           RESPONSIVE DESIGN - Mobile Styles
+           ======================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 8px;
+            }
+
+            header {
+                padding: 18px;
+            }
+
+            .brand {
+                min-width: auto;
+            }
+
+            h1 {
+                font-size: 1.25rem;
+            }
+
+            .kicker {
+                font-size: 0.7rem;
+            }
+
+            .main-nav {
+                width: 100%;
+                justify-content: center;
+                padding: 12px;
+                top: 8px;
+            }
+
+            .navbtn {
+                font-size: 0.82rem;
+                padding: 8px 12px;
+            }
+
+            .section {
+                padding: 2rem 1.5rem;
+                margin: 1.5rem 1rem;
+            }
+
+            .overview-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .overview-sidebar {
+                position: static;
+            }
+
+            .analysis-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .ratio-dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ============================================
+         HEADER SECTION - Company Branding & Info
+         ============================================ -->
+    <header id="top">
+        <div class="brand">
+            <div class="kicker">Financial Analysis Report • FY 2022</div>
+            <h1>Black Knight, Inc. 
+                <br>Financial Ratio Analysis
+            </h1>
+            <p class="description" style="color: #ffffff;">
+            A financial analysis review of Black Knight, Inc.’s financial performance, operational efficiency,
+            and strategic positioning in the software and programming industry.
+        </p>
+            <div class="meta" aria-label="Report metadata">
+            <span class="pill">Industry: <strong>Software &amp; Programming</strong></span>
+            <span class="pill">Fiscal Year: <strong>2022</strong></span>
+            <span class="pill">Revenue: <strong>$1.55B</strong></span>
+            <span class="pill">Prepared by: <strong>Dartreius Anderson</strong></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================
+         STICKY NAVIGATION BAR
+         ============================================ -->
+    <nav class="main-nav" aria-label="Page navigation">
+        <a class="navbtn" href="#overview">Overview</a>
+        <a class="navbtn" href="#dashboard">Ratio Dashboard</a>
+        <a class="navbtn" href="#analysis">Detailed Analysis</a>
+        <a class="navbtn" href="#conclusion">Conclusion</a>
+        <a class="navbtn" href="#recommendations">Recommendations</a>
+        <a class="navbtn" href="#references">References</a>
+    </nav>
+
+    <!-- ============================================
+         MAIN CONTENT CONTAINER
+         ============================================ -->
+    <div class="container">
+    <!-- SECTION 1: EXECUTIVE OVERVIEW -->
+    <div class="section" style="--section-delay: 1;" id="overview">
+        <h2>Executive Overview</h2>
+
+        <div class="overview-container">
+            <!-- Left Side: Text Content -->
+            <div class="overview-text">
+                <p class="analysis-text">
+                    Black Knight, Inc. is an American corporation operating within the software and programming industry. 
+                    The company provides mission-critical technology platforms to mortgage lenders, servicers, and investors, 
+                    enabling improved operational efficiency, effective risk management, and ongoing regulatory compliance. 
+                    Through these solutions, Black Knight helps clients identify new opportunities and achieve stronger, 
+                    more sustainable business performance.
+                </p>
+
+                <h3 class="subsection-title">Operations</h3>
+                <p class="analysis-text">
+                    Black Knight’s product offerings support four primary market segments:
+                </p>
+                <ul class="analysis-list">
+                    <li>Real estate</li>
+                    <li>Mortgage origination</li>
+                    <li>Mortgage servicing</li>
+                    <li>Capital and secondary markets</li>
+                </ul>
+
+                <p class="analysis-text">
+                    The company is also recognized for its monthly data reports, including the <strong>Mortgage Monitor</strong>, 
+                    which provides detailed insights into the mortgage market by analyzing loan-level performance, home price trends,
+                    secondary market metrics, and public records information.
+                </p>
+
+                <h3 class="subsection-title">2022 Performance Highlights</h3>
+                <p class="analysis-text">
+                    The mortgage technology sector faced significant challenges in 2022 as rising interest rates sharply reduced 
+                    refinancing activity and home purchase volumes. Despite these challenges, Black Knight demonstrated resilience, 
+                    achieving revenue growth of 5.2% from $1.48 billion in 2021 to $1.55 billion in 2022. Net income increased 
+                    substantially by 117.6% to $452.5 million.
+                </p>
+
+                <p class="analysis-text">
+                    However, this exceptional profit growth masks underlying operational challenges. Operating income (EBIT) 
+                    declined 8.2% from $303 million to $278.2 million, while operating cash flow fell sharply by 44.1% from 
+                    $449.9 million to $251.7 million.
+                </p>
+            </div>
+
+            <!-- Right Side: Financial Metrics Grid -->
+            <div class="overview-sidebar">
+                <h3 style="margin-top: 0; font-size: 1.25rem; margin-bottom: 1.25rem;">
+                    Key Financial Metrics
+                </h3>
+
+                <div class="overview-grid">
+                    <div class="overview-card">
+                        <div class="overview-label">Industry</div>
+                        <div class="overview-value">Software &amp; Programming</div>
+                    </div>
+                    <div class="overview-card">
+                        <div class="overview-label">Fiscal Year</div>
+                        <div class="overview-value">2022</div>
+                    </div>
+                    <div class="overview-card">
+                        <div class="overview-label">Revenue</div>
+                        <div class="overview-value">$1.55B</div>
+                    </div>
+                    <div class="overview-card">
+                        <div class="overview-label">Net Income</div>
+                        <div class="overview-value">$452.5M</div>
+                    </div>
+                    <div class="overview-card">
+                        <div class="overview-label">Total Assets</div>
+                        <div class="overview-value">$5.83B</div>
+                    </div>
+                    <div class="overview-card">
+                        <div class="overview-label">Total Equity</div>
+                        <div class="overview-value">$2.57B</div>
+                    </div>
+                    <div class="overview-card">
+                        <div class="overview-label">Operating Cash Flow</div>
+                        <div class="overview-value">$251.7M</div>
+                    </div>
+                    <div class="overview-card">
+                        <div class="overview-label">EBIT</div>
+                        <div class="overview-value">$278.2M</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 2: FINANCIAL RATIO DASHBOARD -->
+    <div class="section" style="--section-delay: 2;" id="dashboard">
+            <h2>Financial Ratio Dashboard</h2>
+            <p class="analysis-text">
+                The following nine financial ratios provide comprehensive insight into Black Knight's operational efficiency, 
+                financial stability, and profitability performance compared against the software and programming industry average.
+            </p>
+
+            <div class="ratio-dashboard">
+                <div class="ratio-card" style="--ratio-color: #e76f51;">
+                    <div class="ratio-header">
+                        <div class="ratio-name">Current Ratio</div>
+                        <div class="ratio-badge badge-concerning">Below Average</div>
+                    </div>
+                    <div class="ratio-value">1.27</div>
+                    <div class="ratio-comparison">
+                        Industry Average: <span class="comparison-metric">1.96</span>
+                    </div>
+                    <div class="stat-bar">
+                        <div class="stat-fill" style="width: 65%;"></div>
+                    </div>
+                </div>
+
+                <div class="ratio-card" style="--ratio-color: #d62828;">
+                    <div class="ratio-header">
+                        <div class="ratio-name">Quick Ratio</div>
+                        <div class="ratio-badge badge-poor">Concerning</div>
+                    </div>
+                    <div class="ratio-value">0.76</div>
+                    <div class="ratio-comparison">
+                        Industry Average: <span class="comparison-metric">1.76</span>
+                    </div>
+                    <div class="stat-bar">
+                        <div class="stat-fill" style="width: 43%; background: linear-gradient(90deg, #e76f51 0%, #d62828 100%);"></div>
+                    </div>
+                </div>
+
+                <div class="ratio-card" style="--ratio-color: #e76f51;">
+                    <div class="ratio-header">
+                        <div class="ratio-name">Debt Ratio</div>
+                        <div class="ratio-badge badge-concerning">Elevated</div>
+                    </div>
+                    <div class="ratio-value">0.55</div>
+                    <div class="ratio-comparison">
+                        Industry Average: <span class="comparison-metric">0.47</span>
+                    </div>
+                    <div class="stat-bar">
+                        <div class="stat-fill" style="width: 85%; background: linear-gradient(90deg, #e76f51 0%, #d62828 100%);"></div>
+                    </div>
+                </div>
+
+                <div class="ratio-card" style="--ratio-color: #e76f51;">
+                    <div class="ratio-header">
+                        <div class="ratio-name">Times Interest Earned</div>
+                        <div class="ratio-badge badge-concerning">Below Average</div>
+                    </div>
+                    <div class="ratio-value">2.77x</div>
+                    <div class="ratio-comparison">
+                        Industry Average: <span class="comparison-metric">6.50x</span>
+                    </div>
+                    <div class="stat-bar">
+                        <div class="stat-fill" style="width: 43%; background: linear-gradient(90deg, #e76f51 0%, #d62828 100%);"></div>
+                    </div>
+                </div>
+
+                <div class="ratio-card" style="--ratio-color: #06a77d;">
+                    <div class="ratio-header">
+                        <div class="ratio-name">Receivables Turnover</div>
+                        <div class="ratio-badge badge-excellent">Excellent</div>
+                    </div>
+                    <div class="ratio-value">8.02x</div>
+                    <div class="ratio-comparison">
+                        Industry Average: <span class="comparison-metric">6.80x</span>
+                    </div>
+                    <div class="stat-bar">
+                        <div class="stat-fill" style="width: 118%;"></div>
+                    </div>
+                </div>
+
+                <div class="ratio-card" style="--ratio-color: #e76f51;">
+                    <div class="ratio-header">
+                        <div class="ratio-name">Total Asset Turnover</div>
+                        <div class="ratio-badge badge-concerning">Below Average</div>
+                    </div>
+                    <div class="ratio-value">0.27x</div>
+                    <div class="ratio-comparison">
+                        Industry Average: <span class="comparison-metric">0.80x</span>
+                    </div>
+                    <div class="stat-bar">
+                        <div class="stat-fill" style="width: 34%;"></div>
+                    </div>
+                </div>
+
+                <div class="ratio-card" style="--ratio-color: #06a77d;">
+                    <div class="ratio-header">
+                        <div class="ratio-name">Profit Margin</div>
+                        <div class="ratio-badge badge-excellent">Excellent</div>
+                    </div>
+                    <div class="ratio-value">29%</div>
+                    <div class="ratio-comparison">
+                        Industry Average: <span class="comparison-metric">19%</span>
+                    </div>
+                    <div class="stat-bar">
+                        <div class="stat-fill" style="width: 100%;"></div>
+                    </div>
+                </div>
+
+                <div class="ratio-card" style="--ratio-color: #e76f51;">
+                    <div class="ratio-header">
+                        <div class="ratio-name">Return on Assets (ROA)</div>
+                        <div class="ratio-badge badge-concerning">Below Average</div>
+                    </div>
+                    <div class="ratio-value">8%</div>
+                    <div class="ratio-comparison">
+                        Industry Average: <span class="comparison-metric">12%</span>
+                    </div>
+                    <div class="stat-bar">
+                        <div class="stat-fill" style="width: 67%;"></div>
+                    </div>
+                </div>
+
+                <div class="ratio-card" style="--ratio-color: #e76f51;">
+                    <div class="ratio-header">
+                        <div class="ratio-name">Return on Equity (ROE)</div>
+                        <div class="ratio-badge badge-concerning">Below Average</div>
+                    </div>
+                    <div class="ratio-value">18%</div>
+                    <div class="ratio-comparison">
+                        Industry Average: <span class="comparison-metric">25%</span>
+                    </div>
+                    <div class="stat-bar">
+                        <div class="stat-fill" style="width: 72%;"></div>
+                    </div>
+                </div>
+            </div>
+    </div>
+        
+    <!-- SECTION 3: DETAILED FINANCIAL ANALYSIS -->
+    <div class="section" style="--section-delay: 3;" id="analysis">
+            <h2>Detailed Financial Analysis</h2>
+
+            <div class="analysis-grid">
+                <!-- Card 1: Liquidity Analysis -->
+                <div class="analysis-card">
+                    <div class="category-header">
+                        <div class="category-icon">💧</div>
+                        <h3>Liquidity Analysis</h3>
+                    </div>
+                    
+                    <p class="analysis-text">
+                        Black Knight’s current ratio of 1.27 shows that the company has more current assets than current liabilities, meaning it should be able to meet its short-term obligations. This suggests an acceptable short-term financial position. However, the quick ratio of 0.76 tells a different story, as it shows that cash and other highly liquid assets alone are not enough to cover current liabilities without relying on customer payments or ongoing operating cash flow.
+                    </p>
+
+                    <p class="analysis-text">
+                        Compared to the Software & Programming industry, Black Knight performs below average on both liquidity measures. The industry current ratio of 1.96 and quick ratio of 1.76 indicate that competitors maintain much stronger liquidity positions. This comparison suggests that Black Knight operates with tighter working capital and has less flexibility to handle unexpected expenses or cash flow disruptions.
+                    </p>
+
+                    <div class="key-insight">
+                        <strong>Critical Liquidity Concern:</strong>
+                        This liquidity position presents both stability and risk. While the company remains solvent in the short term, its low quick ratio and sharp 84.2% decline in cash highlight limited financial flexibility. Despite generating $251.7 million in operating cash flow, the significant reduction in cash suggests large outflows related to debt payments, acquisitions, or shareholder distributions. This approach may reflect a strategic choice to invest in growth rather than hold excess cash, but it also increases reliance on steady and predictable cash flows.
+                    </div>
+
+                </div>
+
+                <!-- Card 2: Leverage & Solvency Analysis -->
+                <div class="analysis-card">
+                    <div class="category-header">
+                        <div class="category-icon">⚖️</div>
+                        <h3>Leverage & Solvency</h3>
+                    </div>
+                    
+                    <p class="analysis-text">
+                        Black Knight’s debt ratio of 0.55 means that 55% of the company’s assets are financed through debt, showing a moderately high level of leverage. This indicates the company relies more on borrowing than equity to fund operations, which can increase financial risk but may also boost returns when business conditions are stable.
+                    </p>
+
+                    <p class="analysis-text">
+                        Compared to the industry average debt ratio of 0.47, Black Knight is more leveraged than its competitors. This higher use of debt reduces financial flexibility and increases sensitivity to interest rate changes. The company’s times interest earned ratio of 2.77 supports this concern. Although Black Knight can currently cover its interest expenses, this ratio is well below the industry benchmark of 6.50, leaving less room to absorb earnings declines.
+                    </p>
+
+                    <p class="analysis-text">
+                        This leverage position increases financial risk, especially during periods of economic uncertainty. The higher debt levels may reflect a strategy to support growth or acquisitions, but they require careful management of earnings and cash flow to avoid financial pressure. Rising interest costs and declining operating income have further tightened interest coverage, reinforcing the need for improved cost control and debt management.
+                    </p>
+
+                    <div class="key-insight">
+                        <strong>Interest Coverage Concern:</strong>
+                        Black Knight’s times interest earned ratio of 2.77 is well below the industry average of 6.50, meaning the company has a smaller safety margin to cover interest expenses if earnings decline. Rising interest costs combined with lower operating income increase financial risk and reduce flexibility if profits decrease.
+                    </div>
+                </div>
+
+                <!-- Card 3: Efficiency & Asset Utilization -->
+                <div class="analysis-card">
+                    <div class="category-header">
+                        <div class="category-icon">⚡</div>
+                        <h3>Efficiency & Asset Utilization</h3>
+                    </div>
+                    
+                    <p class="analysis-text">
+                        Black Knight’s receivables turnover of 8.02 shows that the company collects customer payments efficiently and performs better than the industry average of 6.80. This suggests effective credit policies and strong collection practices, which help support cash flow and day-to-day operations.
+                    </p>
+
+                    <p class="analysis-text">
+                        However,the company’s total asset turnover of 0.27 is much lower than the industry average of 0.80. This means Black Knight generates less revenue for each dollar of assets compared to its competitors. While short-term asset management appears strong, the overall asset base is not being used as efficiently to generate sales.
+                    </p>
+
+                    <p class="analysis-text">
+                        This mixed result points to a potential weakness. Strong receivables management supports liquidity, but low total asset turnover may indicate underused assets or a business model focused more on long-term growth than immediate revenue. In a technology-focused industry where acquisitions and intangible assets are common, lower turnover can be expected, but continued underperformance compared to peers could limit future profitability if revenue growth does not improve.
+                    </p>
+
+                    <div class="key-insight">
+                        <strong>Collection Efficiency Strength:</strong>
+                        Black Knight’s receivables turnover of 8.02 indicates that the company collects payments from customers efficiently and faster than the industry average. This strong collection performance improves cash flow, reduces the risk of bad debts, and supports overall liquidity.The company's ability to maintain this collection efficiency while revenue grew 5.2%
+                        validates the nature of its platforms.
+                    </div>
+                </div>
+
+                <!-- Card 4: Profitability Analysis -->
+                <div class="analysis-card">
+                    <div class="category-header">
+                        <div class="category-icon">📈</div>
+                        <h3>Profitability Analysis</h3>
+                    </div>
+                    
+                    <p class="analysis-text">
+                        Black Knight’s profit margin of 29% is well above the industry average of 19%, showing strong cost control and effective pricing. This means the company is able to turn a large portion of its revenue into profit, which gives it a competitive advantage.
+                    </p>
+
+                    <p class="analysis-text">
+                        However, Black Knight’s return on assets (7.8%) and return on equity (17.6%) are lower than the industry averages of 12% and 25%. This indicates that even though the company is profitable, it is not using its assets or shareholders’ equity as efficiently as its competitors to generate returns.
+                    </p>
+
+                    <p class="analysis-text">
+                        Black Knight’s profitability appears to be driven more by high margins than by efficient use of assets. In an industry where companies often grow through acquisitions and large investments, lower ROA and ROE may reflect a sizable asset base that has not yet fully contributed to revenue growth. Improving asset efficiency will be important for increasing shareholder returns and maintaining long-term competitiveness.
+                    </p>
+
+                    <div class="key-insight">
+                        <strong>Profit Margin Excellence:</strong>
+                        Black Knight’s profit margin of 29% is significantly higher than the industry average of 19%, showing strong cost control and effective pricing that allow the company to convert a large portion of revenue into profit.
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <!-- SECTION 4: CONCLUSION -->
+    <div class="section" style="--section-delay: 5;" id="conclusion">
+            <h2>Conclusion</h2>
+            <p class="analysis-text">
+                As of December 31, 2022, Black Knight, Inc. shows overall financial stability, but its performance is uneven
+                across key areas. The company appears able to meet its short-term obligations, as indicated by its current ratio.
+                However, its liquidity is weaker than the industry average, meaning Black Knight has less flexibility to handle
+                unexpected cash flow issues. Because of this, the company relies heavily on steady operating performance to stay
+                financially secure
+            </p>
+
+            <p class="analysis-text">
+                When looking at leverage, Black Knight uses more debt than many of its industry peers and has lower interest coverage.
+                While the company can currently pay its interest expenses, it has a smaller safety cushion if earnings decline,
+                which increases financial risk. Asset efficiency results are mixed. The company does a good job collecting money owed
+                by customers, but its total asset turnover is much lower than the industry standard. This suggests that Black Knight is
+                not using its assets as efficiently as competitors to generate revenue.
+            </p>
+
+            <p class="analysis-text">
+                Profitability is Black Knight’s strongest area. Its profit margin is well above the industry average, showing effective
+                cost control and strong pricing. However, returns on assets and equity are below industry levels, indicating that
+                strong profits have not yet translated into higher overall returns for investors. Overall, Black Knight shows strong
+                operations and steady earnings, but higher debt and lower efficiency limit its financial flexibility. Improving how assets
+                are used and better managing debt will be important for strengthening long-term performance and competitiveness.
+            </p>
+    </div>
+
+    <!-- SECTION 5: STRATEGIC RECOMMENDATIONS & INVESTMENT PERSPECTIVE -->
+    <div class="section" style="--section-delay: 5;" id="recommendations">
+            <div class="recommendations-grid">
+                <!-- Strategic Recommendations Card -->
+                <div class="recommendation-card">
+                    <div class="card-header">
+                        <div class="card-icon">🎯</div>
+                        <h3>Strategic Recommendations</h3>
+                    </div>
+                    <ul class="recommendation-list">
+                        <li>
+                            <strong>Earnings Quality and Cash Flow Gap:</strong> Black Knight should review why net income 
+                            is much higher than operating cash flow to determine whether the increase came from normal 
+                            operations or one-time accounting items.
+                        </li>
+                        <li>
+                            <strong>Cash Position Restoration:</strong> The company needs to quickly rebuild its low cash 
+                            balance by managing payments and securing short-term financing.
+                        </li>
+                        <li>
+                            <strong>Operating Income Stabilization:</strong> Even though revenue grew, operating income fell, 
+                            so Black Knight should focus on controlling costs and improving efficiency to protect profit margins.
+                        </li>
+                        <li>
+                            <strong>Interest Expense Reduction:</strong> Black Knight should work to lower its interest expense 
+                            by refinancing debt and reducing borrowing to improve financial stability.
+                        </li>
+                        <li>
+                            <strong>Sustainable Profitability Model:</strong> The company should focus on profits from regular 
+                            operations rather than one-time gains to ensure long-term, reliable financial performance.
+                        </li>
+                    </ul>
+                </div>
+
+            <!-- Investment Perspective Card -->
+            <div class="recommendation-card">
+                <div class="card-header">
+                    <div class="card-icon">💼</div>
+                    <h3>Investment Perspective</h3>
+                </div>
+                <p class="analysis-text">
+                    From an investment perspective, Black Knight appears moderately attractive but carries some risk. The company’s
+                    strong profit margins and stable operations support earnings, but higher debt levels and weaker efficiency compared
+                    to the industry increase potential downside. Investors with a higher risk tolerance and a long-term outlook may
+                    find the company’s profitability and improvement potential appealing. More conservative investors may prefer to
+                    wait and see progress in reducing debt and improving asset efficiency before investing.
+                </p>
+            </div>
+        </div>
+    </div>   
+
+    <!-- SECTION 6: REFERENCES -->
+    <div class="section" style="--section-delay: 6;" id="references">
+            <h2>References</h2>
+            <div class="ref-list">
+                    <p>Black Knight, Inc. (2022). <em>Annual report on Form 10-K for the fiscal year ended December 31, 2022</em>. U.S. Securities and Exchange Commission.</p>
+
+                    <p>de Jong, A., &amp; Verwijmeren, P. (2010). To have a target debt ratio or not: What difference does it make? <em>Applied Financial Economics, 20</em>(3), 219–226. https://doi.org/10.1080/09603100903282671</p>
+
+                    <p>Majka, M. (n.d.). <em>ROE vs. ROA</em>.</p>
+
+                    <p>Richardson, J. (2023, May 10). <em>2022 HMDA data: Unraveling the impact of rising interest rates on homebuyers and lenders in 2022</em>. National Community Reinvestment Coalition. https://ncrc.org/2022-hmda-data-unraveling-the-impact-of-rising-interest-rates-on-homebuyers-and-lenders-in-2022/</p>
+
+                    <p>Suo, L., Yang, K., &amp; Ji, H. (2023). The impact of technological mergers and acquisitions on enterprise innovation: A review. <em>Sustainability, 15</em>(17), 12883. https://doi.org/10.3390/su151712883</p>
+
+                    <p>Yunus, F. M., Hassan, M. H. A., &amp; Wahab, M. Z. H. (n.d.). <em>Strategic finance choices: Embracing the relevance of equity financing over debt financing</em>. Faculty of Business and Management.</p>
+
+                    <p>Yusup, W. E., &amp; Hariani, S. (2023). The effect of receivables turnover, inventory turnover, and current ratio on profitability. <em>Jurnal Riset Manajemen dan Bisnis, 8</em>(1), 23–32.</p>
+            </div>
+    </div>
+
+    <script>
+        // Animate stat bars on scroll
+        const observerOptions = {
+            threshold: 0.3,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.width = entry.target.getAttribute('data-width') || entry.target.style.width;
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.stat-fill').forEach(bar => {
+            const width = bar.style.width;
+            bar.setAttribute('data-width', width);
+            bar.style.width = '0%';
+            observer.observe(bar);
+        });
+
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
